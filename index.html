@@ -24,7 +24,8 @@
     background-color: #ffffff; /* 배경 흰색 */
     color: #222222; /* 글씨 거의 검은색 */
     text-align: center;
-  }
+    }
+    
   h1, h2 {
     color: #333333;
   }
@@ -94,7 +95,7 @@
   }
   #message {
     margin-top: 10px;
-    color: #b388eb; /* 등록 완료 메시지도 연보라 느낌 */
+    color: #a970ff; /* 진보라 */
     font-size: 14px;
     visibility: hidden;
   }
@@ -107,6 +108,15 @@
     }
     .songItem {
       font-size: 14px;
+    }
+    #registerArea {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    #registerArea input, #registerArea button {
+      width: 100%;
+      max-width: 400px;
     }
   }
 </style>
