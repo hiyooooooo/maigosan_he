@@ -3,17 +3,137 @@
 <head>
   <meta charset="UTF-8">
   <title>迷子の迷子の子ぜくちゃん</title>
-  
-  <!-- 파비콘 추가 -->
-  <link rel="icon" href="favicon.ico.png" type="image/png">
 
   <!-- Zen Kurenaido 구글 폰트 추가 -->
   <link href="https://fonts.googleapis.com/css2?family=Zen+Kurenaido&display=swap" rel="stylesheet">
 
-  <!-- Firebase 연결 -->
-  <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js"></script>
+  <!-- Firebase SDK 추가 (v9 이상용) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+
+  <!-- 파비콘 -->
+  <link rel="icon" href="favicon.ico.png" type="image/png">
+
+  <style>
+    body {
+      font-family: 'Zen Kurenaido', sans-serif;
+      margin: 20px;
+      background-color: #1c1c1c;
+      color: #f0f0f0;
+      text-align: center;
+    }
+    h1 {
+      font-size: 22px;
+    }
+    h2 {
+      font-size: 28px;
+    }
+    input, button {
+      margin: 5px 0;
+      padding: 10px;
+      width: 100%;
+      max-width: 400px;
+      background-color: #2c2c2c;
+      border: 1px solid #555;
+      color: #f0f0f0;
+      border-radius: 8px;
+      font-family: 'Zen Kurenaido', sans-serif;
+    }
+    input::placeholder {
+      color: #aaa;
+    }
+    button {
+      background-color: #6a0dad;
+      font-weight: bold;
+      border: none;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #8536d3;
+    }
+    hr {
+      margin: 0.5px 0; /* 위아래 여백 좁게 */
+      border: 0;
+      height: 1px;
+      background: #aaa;
+      opacity: 0.4;
+    }
+    #songList {
+      margin-top: 20px;
+    }
+    .songItem {
+      background-color: #2a2a2a;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .songInfo {
+      flex: 1;
+      text-align: left;
+    }
+    .buttons {
+      display: flex;
+      gap: 5px;
+    }
+    .iconButton {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+    }
+    .iconButton:hover {
+      color: #aaa;
+    }
+    #message {
+      margin-top: 10px;
+      color: #a970ff;
+      font-size: 14px;
+      visibility: hidden;
+    }
+    @media (max-width: 600px) {
+      h1, h2 {
+        font-size: 20px;
+      }
+      input, button {
+        font-size: 14px;
+      }
+      .songItem {
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>曲を登録する</h1>
+  <div id="registerArea">
+    <input type="text" id="titleInput" placeholder="タイトル">
+    <input type="text" id="artistInput" placeholder="原曲者さん">
+    <input type="text" id="keyInput" placeholder="キー">
+    <button id="addButton" onclick="addSong()">登録する</button>
+    <div id="message">登録完了!</div>
+  </div>
+
+  <hr>
+
+  <h2>曲を探す</h2>
+  <div id="searchArea">
+    <input type="text" id="searchInput" placeholder="探したい曲はー？" oninput="searchSongs()">
+    <div id="searchResultCount"></div>
+  </div>
+
+  <div id="songList"></div>
+
   <script>
+    // Firebase 설정
     const firebaseConfig = {
       apiKey: "AIzaSyCfG9Y1mARnqsJ6O1J3_jSkWmX5ub1G5a0",
       authDomain: "maigosanhe.firebaseapp.com",
@@ -27,127 +147,38 @@
 
     firebase.initializeApp(firebaseConfig);
     const database = firebase.database();
-  </script>
-
-  <style>
-    body {
-      font-family: 'Zen Kurenaido', sans-serif;
-      margin: 20px;
-      background-color: #1c1c1c;
-      color: #f0f0f0;
-      text-align: center;
-    }
-    input, button {
-      margin: 5px 0;
-      padding: 10px;
-      width: 100%;
-      background-color: #2c2c2c;
-      border: 1px solid #555;
-      color: #f0f0f0;
-      font-family: 'Zen Kurenaido', sans-serif;
-      border-radius: 8px;
-    }
-    input::placeholder {
-      color: #aaa;
-    }
-    button {
-      background-color: #6a0dad;
-      border: none;
-      font-weight: bold;
-      transition: background-color 0.3s;
-    }
-    button:hover {
-      background-color: #8536d3;
-    }
-    #registerArea, #searchArea {
-      max-width: 400px;
-      margin: 0 auto 20px;
-      text-align: left;
-    }
-    #songList {
-      margin-top: 20px;
-    }
-    .songItem {
-      margin-bottom: 10px;
-      background-color: #2a2a2a;
-      padding: 10px;
-      border-radius: 8px;
-      font-size: 16px;
-    }
-    #message {
-      margin-top: 10px;
-      color: #a970ff;
-      font-size: 14px;
-      visibility: hidden;
-    }
-    hr {
-      margin: 0.5px 0; /* 너가 요청한 걸로 반영 */
-      border: 0;
-      height: 1px;
-      background: #aaa;
-      opacity: 0.4;
-    }
-    @media (max-width: 600px) {
-      body {
-        margin: 10px;
-        font-size: 14px;
-      }
-      input, button {
-        padding: 8px;
-        font-size: 14px;
-      }
-      .songItem {
-        font-size: 14px;
-      }
-      #message {
-        font-size: 12px;
-      }
-    }
-  </style>
-</head>
-<body>
-
-  <h1>曲を登録する</h1>
-
-  <div id="registerArea">
-    <input type="text" id="titleInput" placeholder="タイトル">
-    <input type="text" id="artistInput" placeholder="原曲者さん">
-    <input type="text" id="keyInput" placeholder="キー">
-    <button id="addButton" onclick="addSong()">登録する</button>
-    <div id="message">登録完了!</div>
-  </div>
-
-  <hr>
-
-  <h2>曲を探す</h2>
-
-  <div id="searchArea">
-    <input type="text" id="searchInput" placeholder="探したい曲はー？" oninput="searchSongs()">
-    <div id="searchResultCount"></div>
-  </div>
-
-  <div id="songList"></div>
-
-  <script>
-    let songs = [];
-    let editIndex = null;
-
     const songsRef = database.ref('songs');
+
+    let editKey = null;
 
     function addSong() {
       const title = document.getElementById('titleInput').value.trim();
       const artist = document.getElementById('artistInput').value.trim();
       const key = document.getElementById('keyInput').value.trim();
+      const addButton = document.getElementById('addButton');
+      const message = document.getElementById('message');
 
       if (title && key) {
-        const songData = {
-          title,
-          artist: artist || '가수 없음',
-          key
-        };
-        songsRef.push(songData);
-        clearInputs();
-        showMessage("登録完了!");
+        addButton.disabled = true;
+        addButton.textContent = '登録中...';
+        message.style.visibility = 'hidden';
+
+        setTimeout(() => {
+          if (editKey) {
+            songsRef.child(editKey).update({ title, artist: artist || '가수 없음', key });
+            editKey = null;
+          } else {
+            const newSong = songsRef.push();
+            newSong.set({ title, artist: artist || '가수 없음', key });
+          }
+          clearInputs();
+          addButton.disabled = false;
+          addButton.textContent = '登録する';
+          message.style.visibility = 'visible';
+          setTimeout(() => {
+            message.style.visibility = 'hidden';
+          }, 1500);
+        }, 500);
       } else {
         alert('Titleとキーを入力してください');
       }
@@ -159,58 +190,85 @@
       document.getElementById('keyInput').value = '';
     }
 
-    function showMessage(text) {
-      const message = document.getElementById('message');
-      message.textContent = text;
-      message.style.visibility = 'visible';
-      setTimeout(() => {
-        message.style.visibility = 'hidden';
-      }, 1500);
-    }
-
-    function showSongs(list) {
+    function showSongs(snapshot) {
       const songListDiv = document.getElementById('songList');
+      const searchResultCount = document.getElementById('searchResultCount');
       songListDiv.innerHTML = '';
 
-      if (list.length === 0) {
-        songListDiv.textContent = '登録されていない曲です';
-        document.getElementById('searchResultCount').textContent = '';
-        return;
-      }
-
-      document.getElementById('searchResultCount').textContent = `${list.length}件見つかりました`;
-
-      const sortedList = [...list].sort((a, b) => a.title.localeCompare(b.title, 'ja'));
-
-      sortedList.forEach(song => {
-        const div = document.createElement('div');
-        div.className = 'songItem';
-        div.innerHTML = `◦ ${song.title} / ${song.artist} / ${song.key}`;
-        songListDiv.appendChild(div);
+      const songs = [];
+      snapshot.forEach(childSnapshot => {
+        const song = childSnapshot.val();
+        song.keyName = childSnapshot.key;
+        songs.push(song);
       });
-    }
 
-    function searchSongs() {
+      // 검색어 적용
       const keyword = document.getElementById('searchInput').value.trim().toLowerCase();
       const filtered = songs.filter(song =>
         song.title.toLowerCase().includes(keyword) ||
         song.artist.toLowerCase().includes(keyword) ||
         song.key.toLowerCase().includes(keyword)
       );
-      showSongs(filtered);
+
+      searchResultCount.textContent = `${filtered.length}件見つかりました`;
+
+      // 일본어 50음도순 정렬
+      filtered.sort((a, b) => a.title.localeCompare(b.title, 'ja'));
+
+      if (filtered.length === 0) {
+        songListDiv.textContent = '登録されていない曲です';
+        return;
+      }
+
+      filtered.forEach(song => {
+        const div = document.createElement('div');
+        div.className = 'songItem';
+
+        const info = document.createElement('div');
+        info.className = 'songInfo';
+        info.textContent = `◦ ${song.title} / ${song.artist} / ${song.key}`;
+
+        const buttons = document.createElement('div');
+        buttons.className = 'buttons';
+
+        const editBtn = document.createElement('button');
+        editBtn.className = 'iconButton';
+        editBtn.innerHTML = '✏️';
+        editBtn.title = '수정';
+        editBtn.onclick = () => {
+          document.getElementById('titleInput').value = song.title;
+          document.getElementById('artistInput').value = song.artist === '가수 없음' ? '' : song.artist;
+          document.getElementById('keyInput').value = song.key;
+          editKey = song.keyName;
+        };
+
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'iconButton';
+        deleteBtn.innerHTML = '❌';
+        deleteBtn.title = '삭제';
+        deleteBtn.onclick = () => {
+          if (confirm('本当に削除しますか？')) {
+            songsRef.child(song.keyName).remove();
+          }
+        };
+
+        buttons.appendChild(editBtn);
+        buttons.appendChild(deleteBtn);
+
+        div.appendChild(info);
+        div.appendChild(buttons);
+        songListDiv.appendChild(div);
+      });
     }
 
-    songsRef.on('value', (snapshot) => {
-      const data = snapshot.val();
-      if (data) {
-        songs = Object.values(data);
-      } else {
-        songs = [];
-      }
-      showSongs(songs);
-    });
+    songsRef.on('value', showSongs);
 
-    document.addEventListener('keydown', function(event) {
+    function searchSongs() {
+      songsRef.once('value').then(showSongs);
+    }
+
+    // 엔터키로 등록
+    document.addEventListener('keydown', function (event) {
       if (event.key === 'Enter') {
         addSong();
       }
