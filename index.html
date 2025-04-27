@@ -7,6 +7,9 @@
   <!-- Zen Kurenaido 구글 폰트 추가 -->
   <link href="https://fonts.googleapis.com/css2?family=Zen+Kurenaido&display=swap" rel="stylesheet">
 
+  <!-- Font Awesome (아이콘용) -->
+  <script src="https://kit.fontawesome.com/4c2e10d3e4.js" crossorigin="anonymous"></script>
+
   <!-- Firebase SDK 추가 (v9 이상용) -->
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
@@ -150,6 +153,7 @@
     const songsRef = database.ref('songs');
 
     let editKey = null;
+    let isSearching = false;
 
     function addSong() {
       const title = document.getElementById('titleInput').value.trim();
@@ -210,7 +214,12 @@
         song.key.toLowerCase().includes(keyword)
       );
 
-      searchResultCount.textContent = `${filtered.length}件見つかりました`;
+      if (keyword === '') {
+        searchResultCount.textContent = '';
+      } else {
+        searchResultCount.textContent = `${filtered.length}件見つかりました`;
+      }
+
 
       // 일본어 50음도순 정렬
       filtered.sort((a, b) => a.title.localeCompare(b.title, 'ja'));
