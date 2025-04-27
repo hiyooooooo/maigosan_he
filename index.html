@@ -18,13 +18,22 @@
   <link rel="icon" href="favicon.ico.png" type="image/png">
 
   <style>
-    body {
+  body {
     font-family: 'Zen Kurenaido', sans-serif;
     margin: 20px;
     background-color: #ffffff; /* 배경 흰색 */
     color: #222222; /* 글씨 거의 검은색 */
     text-align: center;
-    }
+  }
+  #registerArea {
+    display: flex;
+    flex-direction: column; /* 세로 정렬 */
+    align-items: center;
+    gap: 10px;
+    margin: 0px auto 0.1px;
+    max-width: 400px;
+  }
+
     
   h1, h2 {
     color: #333333;
@@ -95,7 +104,7 @@
   }
   #message {
     margin-top: 10px;
-    color: #a970ff; /* 진보라 */
+    color: #8b35d1; /* 진보라 */
     font-size: 14px;
     visibility: hidden;
   }
@@ -108,15 +117,6 @@
     }
     .songItem {
       font-size: 14px;
-    }
-    #registerArea {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    #registerArea input, #registerArea button {
-      width: 100%;
-      max-width: 400px;
     }
   }
 </style>
