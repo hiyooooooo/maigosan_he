@@ -124,22 +124,21 @@
     .songItem {
       font-size: 14px;
     }
-  } 
+  }
+  #searchArea {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
   #favoriteToggleArea {
-     width: 100%;
-     max-width: 400px; /* 검색창 너비랑 똑같이 */
-     margin: 10px auto 20px auto;
-     display: flex;
-     align-items: center;
-     justify-content: flex-start; /* 왼쪽 정렬 */
-     font-size: 14px;
-     color: #555;
-     padding-left: 10px; /* 살짝 여유주면 더 예쁨 */
-   }
- #favoriteToggleArea input[type="checkbox"] {
-     margin-right: 8px;
-     transform: scale(1.2);
-   }
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+  }
+
   </style>
 </head>
 
@@ -160,8 +159,9 @@
   <div id="searchArea">
     <input type="text" id="searchInput" placeholder="探したい曲はー？" oninput="searchSongs()">
     <div id="favoriteToggleArea">
-      <input type="checkbox" id="favoriteOnly" onchange="toggleFavoriteOnly()">
+      <input type="checkbox" id="favoriteOnly" onchange="searchSongs()">
       <label for="favoriteOnly">お気に入りの曲だけ表示する</label>
+      </div>
     </div>
     <div id="searchResultCount"></div>
   </div>
