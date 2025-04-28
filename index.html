@@ -125,19 +125,6 @@
       font-size: 14px;
     }
   }
-  #favoriteToggleArea {
-    display: flex;
-    align-items: center;
-    margin: 0 auto;
-    width: 100%;
-    max-width: 400px;
-    gap: 8px;
-   font-size: 14px;
-   color: #333;
-  }
-  #favoriteToggle {
-    margin: 0;
-  }
 </style>
 </head>
 
@@ -157,12 +144,6 @@
   <h2>曲を探す</h2>
   <div id="searchArea">
     <input type="text" id="searchInput" placeholder="探したい曲はー？" oninput="searchSongs()">
-    <div id="favoriteToggleArea">
-      <input type="checkbox" id="favoriteToggle" onchange="toggleFavoriteOnly()">
-      <label for="favoriteToggle">お気に入りの曲だけ表示する</label>
-    </div>
-  </div>
-  
     <div id="searchResultCount"></div>
   </div>
 
