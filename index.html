@@ -183,11 +183,11 @@
 
         setTimeout(() => {
           if (editKey) {
-            songsRef.child(editKey).update({ title, artist: artist || '가수 없음', key });
+            songsRef.child(editKey).update({ title, artist: artist || '?', key });
             editKey = null;
           } else {
             const newSong = songsRef.push();
-            newSong.set({ title, artist: artist || '가수 없음', key });
+            newSong.set({ title, artist: artist || '?', key });
           }
           clearInputs();
           addButton.disabled = false;
@@ -260,7 +260,7 @@
         editBtn.title = '수정';
         editBtn.onclick = () => {
           document.getElementById('titleInput').value = song.title;
-          document.getElementById('artistInput').value = song.artist === '가수 없음' ? '' : song.artist;
+          document.getElementById('artistInput').value = song.artist === '?' ? '' : song.artist;
           document.getElementById('keyInput').value = song.key;
           editKey = song.keyName;
         };
