@@ -125,30 +125,18 @@
       font-size: 14px;
     }
   }
-  #searchArea {
-    width: 100%;
-    max-width: 400px;
-    margin: 0 auto;
-  }
-
-  #searchArea {
-    width: 100%;
-    max-width: 400px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  #searchInput {
-    width: 100%;
-    margin-bottom: 10px;
-  }
-
   #favoriteToggleArea {
     display: flex;
     align-items: center;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 400px;
     gap: 8px;
+   font-size: 14px;
+   color: #333;
+  }
+  #favoriteToggle {
+    margin: 0;
   }
 </style>
 </head>
@@ -171,8 +159,8 @@
     <input type="text" id="searchInput" placeholder="探したい曲はー？" oninput="searchSongs()">
 
     <div id="favoriteToggleArea">
-      <input type="checkbox" id="favoriteOnly" onchange="searchSongs()">
-      <label for="favoriteOnly">お気に入りの曲だけ表示する</label>
+      <input type="checkbox" id="favoriteToggle" onchange="toggleFavoriteView()">
+      <label for="favoriteToggle">お気に入りの曲だけ表示する</label>
     </div>
   </div>
 
