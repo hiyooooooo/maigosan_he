@@ -144,6 +144,10 @@
   <h2>曲を探す</h2>
   <div id="searchArea">
     <input type="text" id="searchInput" placeholder="探したい曲はー？" oninput="searchSongs()">
+    <div style="margin-top: 10px;">
+      <input type="checkbox" id="favoriteOnly" onchange="searchSongs()">
+      <label for="favoriteOnly" style="font-size: 14px;">お気に入りの曲だけ表示する</label>
+    </div>
     <div id="searchResultCount"></div>
   </div>
 
